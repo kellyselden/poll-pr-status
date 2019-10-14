@@ -1,0 +1,24 @@
+{
+  "name": "poll-pr-status",
+  "version": "0.0.0",
+  "description": "Poll for pull request statuses",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellyselden/poll-pr-status.git"
+  },
+  "keywords": [
+    "merge",
+    "github",
+    "travis"
+  ],
+  "author": "Kelly Selden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kellyselden/poll-pr-status/issues"
+  },
+  "homepage": "https://github.com/kellyselden/poll-pr-status#readme"
+}
