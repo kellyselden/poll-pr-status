@@ -12,7 +12,7 @@ async function getStatus({
   context,
   interval = 1000
 }) {
-  return await new Promise(resolve => {
+  return await new Promise((resolve, reject) => {
     (async function getStatus() {
       if (!commit) {
         // https://github.com/watson/ci-info/pull/42
@@ -41,7 +41,7 @@ async function getStatus({
 
           let repo = `${org}/${name}`;
 
-          let { body } = await request({
+          let response = await request({
             url: `https://api.github.com/repos/${repo}/statuses/${commit}`,
             headers: {
               'User-Agent': repo
@@ -49,7 +49,11 @@ async function getStatus({
             json: true
           });
 
-          status = body.find(status => status.context === context);
+          if (response.statusCode === 403) {
+            return reject(new Error(response.body.message));
+          }
+
+          status = response.body.find(status => status.context === context);
 
           if (status && status.state !== 'pending') {
             return resolve(status);
