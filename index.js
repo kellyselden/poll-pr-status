@@ -10,6 +10,7 @@ async function getStatus({
   commit,
   repository,
   context,
+  token,
   interval = 1000
 }) {
   return await new Promise((resolve, reject) => {
@@ -44,7 +45,10 @@ async function getStatus({
           let response = await request({
             url: `https://api.github.com/repos/${repo}/statuses/${commit}`,
             headers: {
-              'User-Agent': repo
+              'User-Agent': repo,
+              ...token ? {
+                'Authorization': `token ${token}`
+              } : {}
             },
             json: true
           });
