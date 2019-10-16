@@ -59,7 +59,8 @@ async function getStatus({
         }
       }
 
-      if (!status && !ci.isPR) {
+      // https://github.com/watson/ci-info/pull/42
+      if (!status && !(ci.isPR || process.env.GITHUB_EVENT_NAME === 'pull_request')) {
         return resolve(null);
       }
 
