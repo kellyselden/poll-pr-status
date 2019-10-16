@@ -5,6 +5,7 @@ const request = promisify(require('request'));
 const { URL } = require('url');
 const pkgUp = require('pkg-up');
 const ci = require('ci-info');
+const execa = require('execa');
 
 async function getStatus({
   commit,
@@ -24,7 +25,8 @@ async function getStatus({
             commit = process.env.TRAVIS_COMMIT;
           }
         } else if (process.env.GITHUB_ACTIONS) {
-          commit = process.env.GITHUB_SHA;
+          // commit = process.env.GITHUB_SHA;
+          commit = (await execa.command('git rev-parse HEAD^2')).stdout;
         }
       }
 
