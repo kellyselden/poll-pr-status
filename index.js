@@ -15,7 +15,7 @@ async function getStatus({
   interval = 1000
 }) {
   return await new Promise((resolve, reject) => {
-    (async function getStatus() {
+    (async function getStatus(options = {}) {
       if (!commit) {
         // https://github.com/watson/ci-info/pull/42
         if (ci.TRAVIS) {
@@ -50,6 +50,9 @@ async function getStatus({
               'User-Agent': repo,
               ...token ? {
                 'Authorization': `token ${token}`
+              } : {},
+              ...options.etag ? {
+                'If-None-Match': options.etag
               } : {}
             },
             json: true
@@ -59,11 +62,17 @@ async function getStatus({
             return reject(new Error(response.body.message));
           }
 
+          if (response.statusCode === 304) {
+            break;
+          }
+
           status = response.body.find(status => status.context === context);
 
           if (status && status.state !== 'pending') {
             return resolve(status);
           }
+
+          options.etag = response.headers.etag;
 
           break;
         }
@@ -74,7 +83,7 @@ async function getStatus({
         return resolve(null);
       }
 
-      setTimeout(getStatus, interval);
+      setTimeout(getStatus, interval, options);
     })();
   });
 }
