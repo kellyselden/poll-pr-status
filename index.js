@@ -27,6 +27,8 @@ async function getStatus({
         } else if (process.env.GITHUB_ACTIONS) {
           // commit = process.env.GITHUB_SHA;
           commit = (await execa.command('git rev-parse HEAD^2')).stdout;
+        } else {
+          throw new Error('CI server not recognized');
         }
       }
 
@@ -76,6 +78,8 @@ async function getStatus({
 
           break;
         }
+        default:
+          throw new Error('git server not recognized');
       }
 
       // https://github.com/watson/ci-info/pull/42
