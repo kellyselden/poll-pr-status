@@ -35,3 +35,9 @@ await getStatus({
   interval: 1000
 });
 ```
+
+## Support
+
+GitHub
+GitHub Actions
+Travis CI
