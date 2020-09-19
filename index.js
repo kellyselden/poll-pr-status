@@ -12,7 +12,7 @@ async function getStatus({
   repository,
   context,
   token,
-  interval = 1000
+  interval = 1e3
 }) {
   return await new Promise((resolve, reject) => {
     (async function getStatus(options = {}) {
