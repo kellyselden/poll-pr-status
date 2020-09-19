@@ -8,8 +8,7 @@ describe(function() {
   it('works', async function() {
     let status = await getStatus({
       commit: '0b1e36a16c1319424f686facc84c7ca386d34842',
-      context: 'continuous-integration/travis-ci/push',
-      token: process.env.POLL_PR_STATUS_TOKEN
+      context: 'continuous-integration/travis-ci/push'
     });
 
     expect(status.state).to.equal('success');
