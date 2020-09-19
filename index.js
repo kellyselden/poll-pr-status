@@ -6,16 +6,31 @@ const { URL } = require('url');
 const pkgUp = require('pkg-up');
 const ci = require('ci-info');
 const execa = require('execa');
+const { name } = require('./package');
+
+function getTime() {
+  return new Date().getTime();
+}
 
 async function getStatus({
   commit,
   repository,
   context,
   token,
-  interval = 1e3
+  interval = 1e3,
+  timeout = 30e3
 }) {
   return await new Promise((resolve, reject) => {
+    let start = getTime();
+    let end = start + timeout;
+
     (async function getStatus(options = {}) {
+      let now = getTime();
+
+      if (now >= end) {
+        return reject(new Error(`${name} has timed out`));
+      }
+
       if (!commit) {
         // https://github.com/watson/ci-info/pull/42
         if (ci.TRAVIS) {
