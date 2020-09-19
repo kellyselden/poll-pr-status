@@ -1,6 +1,6 @@
 {
   "name": "poll-pr-status",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Poll for pull request statuses",
   "main": "index.js",
   "files": [
