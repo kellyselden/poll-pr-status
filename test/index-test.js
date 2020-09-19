@@ -2,9 +2,17 @@
 
 const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
+const { getStatus } = require('..');
 
 describe(function() {
-  it('works', function() {
-    expect(1).to.be.ok;
+  it('works', async function() {
+    let status = await getStatus({
+      commit: '0b1e36a16c1319424f686facc84c7ca386d34842',
+      context: 'continuous-integration/travis-ci/push',
+      token: process.env.POLL_PR_STATUS_TOKEN
+    });
+
+    expect(status.state).to.equal('success');
+    expect(status.description).to.equal('The Travis CI build passed');
   });
 });

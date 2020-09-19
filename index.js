@@ -51,6 +51,10 @@ async function getStatus({
         repository = require(await pkgUp()).repository;
       }
 
+      if (typeof repository !== 'string') {
+        repository = repository.url;
+      }
+
       let url = new URL(repository);
 
       let status;
