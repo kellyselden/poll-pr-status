@@ -66,8 +66,9 @@ async function getStatus({
           let repo = `${org}/${name}`;
 
           let response = await request({
-            url: `https://api.github.com/repos/${repo}/statuses/${commit}`,
+            url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`,
             headers: {
+              'Accept': 'application/vnd.github.antiope-preview+json',
               'User-Agent': repo,
               ...token ? {
                 'Authorization': `token ${token}`
@@ -87,8 +88,9 @@ async function getStatus({
             break;
           }
 
-          status = response.body.find(status => status.context === context);
-
+          status = response.body.check_runs.find(status => status.name === context);
+          // eslint-disable-next-line no-console
+          console.log(status);
           if (status && status.state !== 'pending') {
             return resolve(status);
           }
@@ -103,7 +105,7 @@ async function getStatus({
 
       // https://github.com/watson/ci-info/pull/42
       if (!status && !(ci.isPR || process.env.GITHUB_EVENT_NAME === 'pull_request')) {
-        return resolve(null);
+        // return resolve(null);
       }
 
       setTimeout(getStatus, interval, options);
