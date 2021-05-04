@@ -35,7 +35,7 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@kellyselden/node-template": "1.4.3",
+    "@kellyselden/node-template": "1.4.5",
     "chai": "^4.3.4",
     "eslint": "^7.25.0",
     "eslint-config-sane": "^1.0.0",
@@ -46,6 +46,6 @@
     "eslint-plugin-prefer-let": "^1.1.0",
     "mocha": "^8.3.2",
     "mocha-helpers": "^5.1.1",
-    "renovate-config-standard": "^2.1.1"
+    "renovate-config-standard": "2.1.2"
   }
 }
