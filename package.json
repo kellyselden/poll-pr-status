@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/kellyselden/poll-pr-status#readme",
   "engines": {
-    "node": ">=10.12"
+    "node": ">=12.13"
   },
   "dependencies": {
     "ci-info": "^3.0.0",
