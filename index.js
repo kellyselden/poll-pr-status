@@ -3,7 +3,6 @@
 const { promisify } = require('util');
 const request = promisify(require('request'));
 const { URL } = require('url');
-const pkgUp = require('pkg-up');
 const ci = require('ci-info');
 const execa = require('execa');
 const { name } = require('./package');
@@ -48,6 +47,9 @@ async function getStatus({
       }
 
       if (!repository) {
+        // eslint-disable-next-line prefer-let/prefer-let
+        const { pkgUp } = await import('pkg-up');
+
         repository = require(await pkgUp()).repository;
       }
 
