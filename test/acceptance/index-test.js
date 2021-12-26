@@ -1,8 +1,8 @@
 'use strict';
 
-const { describe } = require('./helpers/mocha');
-const { expect } = require('./helpers/chai');
-const { getStatus } = require('..');
+const { describe } = require('../helpers/mocha');
+const { expect } = require('../helpers/chai');
+const { getStatus } = require('../..');
 
 describe(function() {
   it('works', async function() {
