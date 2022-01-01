@@ -89,6 +89,9 @@ async function getStatus({
             break;
           }
 
+          // eslint-disable-next-line no-console
+          console.log(JSON.stringify(response.body, null, 2));
+
           status = response.body.find(status => status.context === context);
 
           if (status && status.state !== 'pending') {
