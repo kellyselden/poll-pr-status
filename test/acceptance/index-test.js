@@ -7,7 +7,7 @@ const { getStatus } = require('../..');
 describe(function() {
   it('works', async function() {
     let status = await getStatus({
-      commit: '0b1e36a16c1319424f686facc84c7ca386d34842',
+      commit: 'e59fc1fb8eb456a7d4c4d29f84ceb135d9711570',
       context: 'continuous-integration/travis-ci/push'
     });
 
