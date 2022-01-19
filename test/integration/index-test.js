@@ -14,7 +14,7 @@ const token = 'test token';
 const etag = 'test etag';
 const name = require('../../package').name;
 
-describe.only(function() {
+describe(function() {
   setUpObjectReset(process.env);
   setUpObjectReset(ci);
   setUpSinon();
@@ -22,9 +22,13 @@ describe.only(function() {
   it('uses passed in commit', async function() {
     let request = this.sinon.stub()
       .resolves({
-        body: [
-          {}
-        ]
+        body: {
+          'check_runs': [
+            {
+              status: 'completed'
+            }
+          ]
+        }
       });
 
     await getStatus({
@@ -34,16 +38,20 @@ describe.only(function() {
     });
 
     expect(request).to.be.calledWith(this.sinon.match({
-      url: `https://api.github.com/repos/${repo}/statuses/${commit}`
+      url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`
     }));
   });
 
   it('adds repo user agent', async function() {
     let request = this.sinon.stub()
       .resolves({
-        body: [
-          {}
-        ]
+        body: {
+          'check_runs': [
+            {
+              status: 'completed'
+            }
+          ]
+        }
       });
 
     await getStatus({
@@ -62,9 +70,13 @@ describe.only(function() {
   it('adds auth header', async function() {
     let request = this.sinon.stub()
       .resolves({
-        body: [
-          {}
-        ]
+        body: {
+          'check_runs': [
+            {
+              status: 'completed'
+            }
+          ]
+        }
       });
 
     await getStatus({
@@ -82,13 +94,17 @@ describe.only(function() {
   });
 
   it('returns status', async function() {
-    let expected = {};
+    let expected = {
+      status: 'completed'
+    };
 
     let request = this.sinon.stub()
       .resolves({
-        body: [
-          expected
-        ]
+        body: {
+          'check_runs': [
+            expected
+          ]
+        }
       });
 
     let actual = await getStatus({
@@ -102,15 +118,20 @@ describe.only(function() {
 
   it('uses context', async function() {
     let expected = {
-      context
+      status: 'completed',
+      name: context
     };
 
     let request = this.sinon.stub()
       .resolves({
-        body: [
-          {},
-          expected
-        ]
+        body: {
+          'check_runs': [
+            {
+              status: 'completed'
+            },
+            expected
+          ]
+        }
       });
 
     let actual = await getStatus({
@@ -138,11 +159,13 @@ describe.only(function() {
       let request = this.sinon.stub()
         .resolves({
           headers: {},
-          body: [
-            {
-              state: 'pending'
-            }
-          ]
+          body: {
+            'check_runs': [
+              {
+                status: 'foo'
+              }
+            ]
+          }
         });
 
       let clock = this.sinon.useFakeTimers(1641085939689);
@@ -174,11 +197,13 @@ describe.only(function() {
         headers: {
           etag
         },
-        body: [
-          {
-            state: 'pending'
-          }
-        ]
+        body: {
+          'check_runs': [
+            {
+              status: 'foo'
+            }
+          ]
+        }
       })
       .onSecondCall()
       .rejects();
@@ -242,7 +267,7 @@ describe.only(function() {
     await expect(promise).to.eventually.be.rejected;
   });
 
-  it('Travis PR commit', async function() {
+  it('Travis CI PR commit', async function() {
     ci.TRAVIS = true;
     ci.isPR = true;
     process.env.TRAVIS_PULL_REQUEST_SHA = commit;
@@ -257,11 +282,11 @@ describe.only(function() {
     await expect(promise).to.eventually.be.rejected;
 
     expect(request).to.be.calledWith(this.sinon.match({
-      url: `https://api.github.com/repos/${repo}/statuses/${commit}`
+      url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`
     }));
   });
 
-  it('Travis master commit', async function() {
+  it('Travis CI master commit', async function() {
     ci.TRAVIS = true;
     ci.isPR = false;
     process.env.TRAVIS_COMMIT = commit;
@@ -276,7 +301,7 @@ describe.only(function() {
     await expect(promise).to.eventually.be.rejected;
 
     expect(request).to.be.calledWith(this.sinon.match({
-      url: `https://api.github.com/repos/${repo}/statuses/${commit}`
+      url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`
     }));
   });
 
@@ -315,9 +340,13 @@ describe.only(function() {
 
       let request = this.sinon.stub()
         .resolves({
-          body: [
-            {}
-          ]
+          body: {
+            'check_runs': [
+              {
+                status: 'completed'
+              }
+            ]
+          }
         });
 
       await getStatus({
@@ -327,7 +356,7 @@ describe.only(function() {
       });
 
       expect(request).to.be.calledWith(this.sinon.match({
-        url: `https://api.github.com/repos/${repo}/statuses/${commit}`
+        url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`
       }));
     });
 

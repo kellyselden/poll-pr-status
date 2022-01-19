@@ -56,10 +56,10 @@ async function getStatus({
   return await new Promise((resolve, reject) => {
     async function getStatus() {
       try {
-        let status = await _getStatus(...arguments);
+        let result = await _getStatus(...arguments);
 
-        if (status !== undefined) {
-          resolve(status);
+        if (result !== undefined) {
+          resolve(result);
         }
       } catch (err) {
         reject(err);
@@ -73,7 +73,7 @@ async function getStatus({
         throw new Error(`${name} has timed out`);
       }
 
-      let status;
+      let result;
 
       switch (url.host) {
         case 'github.com': {
@@ -82,7 +82,7 @@ async function getStatus({
           let repo = `${org}/${name}`;
 
           let response = await request({
-            url: `https://api.github.com/repos/${repo}/statuses/${commit}`,
+            url: `https://api.github.com/repos/${repo}/commits/${commit}/check-runs`,
             headers: {
               'User-Agent': repo,
               ...token ? {
@@ -103,10 +103,10 @@ async function getStatus({
             break;
           }
 
-          status = response.body.find(status => status.context === context);
+          result = response.body.check_runs.find(({ name }) => name === context);
 
-          if (status && status.state !== 'pending') {
-            return status;
+          if (result && result.status === 'completed') {
+            return result;
           }
 
           options.etag = response.headers.etag;
@@ -118,7 +118,7 @@ async function getStatus({
       }
 
       // https://github.com/watson/ci-info/pull/42
-      if (!status && !(ci.isPR || process.env.GITHUB_EVENT_NAME === 'pull_request')) {
+      if (!result && !(ci.isPR || process.env.GITHUB_EVENT_NAME === 'pull_request')) {
         return null;
       }
 
