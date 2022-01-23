@@ -5,13 +5,23 @@ const { expect } = require('../helpers/chai');
 const { getStatus } = require('../..');
 
 describe(function() {
-  it('works', async function() {
+  it('Travis CI', async function() {
     let status = await getStatus({
       commit: '0b1e36a16c1319424f686facc84c7ca386d34842',
-      context: 'continuous-integration/travis-ci/push'
+      context: 'Travis CI - Branch'
     });
 
-    expect(status.state).to.equal('success');
-    expect(status.description).to.equal('The Travis CI build passed');
+    expect(status.conclusion).to.equal('success');
+    expect(status.output.title).to.equal('Build Passed');
+  });
+
+  it('GitHub Actions', async function() {
+    let status = await getStatus({
+      commit: '340033cc59a83ed5c000669a8e39a50dcd4356d1',
+      context: 'lint'
+    });
+
+    expect(status.conclusion).to.equal('success');
+    expect(status.id).to.equal(4637956596);
   });
 });
