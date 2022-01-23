@@ -3,7 +3,6 @@
 const { promisify } = require('util');
 const { URL } = require('url');
 const ci = require('ci-info');
-const execa = require('execa');
 const { name } = require('./package');
 
 function getTime() {
@@ -30,6 +29,9 @@ async function getStatus({
         commit = process.env.TRAVIS_COMMIT;
       }
     } else if (process.env.GITHUB_ACTIONS) {
+      // eslint-disable-next-line prefer-let/prefer-let
+      const { execa } = await import('execa');
+
       // commit = process.env.GITHUB_SHA;
       commit = (await execa('git', ['rev-parse', 'HEAD^2'], { cwd })).stdout;
     } else {

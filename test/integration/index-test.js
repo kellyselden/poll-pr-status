@@ -320,7 +320,7 @@ describe(function() {
     });
 
     async function git(...args) {
-      return (await require('execa')('git', args, { cwd })).stdout;
+      return (await (await import('execa')).execa('git', args, { cwd })).stdout;
     }
 
     async function writeFile(path, ...args) {
