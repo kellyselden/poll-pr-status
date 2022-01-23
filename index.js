@@ -31,7 +31,7 @@ async function getStatus({
       }
     } else if (process.env.GITHUB_ACTIONS) {
       // commit = process.env.GITHUB_SHA;
-      commit = (await execa.command('git rev-parse HEAD^2', { cwd })).stdout;
+      commit = (await execa('git', ['rev-parse', 'HEAD^2'], { cwd })).stdout;
     } else {
       throw new Error('CI server not recognized');
     }
