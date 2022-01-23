@@ -19,6 +19,13 @@ describe(function() {
   setUpObjectReset(ci);
   setUpSinon();
 
+  beforeEach(function() {
+    delete process.env.GITHUB_ACTIONS;
+    delete process.env.GITHUB_EVENT_NAME;
+
+    ci.isPR = false;
+  });
+
   it('uses passed in commit', async function() {
     let request = this.sinon.stub()
       .resolves({
